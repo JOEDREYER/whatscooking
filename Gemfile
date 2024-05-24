@@ -50,6 +50,7 @@ gem "font-awesome-sass", "~> 6.1"
 gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 gem 'devise'
+# gem 'simple_calendar', '~> 2.0', '>= 2.0.6'
 
 
 group :development, :test do

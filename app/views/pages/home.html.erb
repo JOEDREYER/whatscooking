@@ -1,2 +1,12 @@
 <h1>Pages#home</h1>
 <p>Find me in app/views/pages/home.html.erb</p>
+
+<%= calendar_for @spots do |calendar| %>
+  <%= calendar.calendar_table do |date, spots| %>
+    <%= date %>
+    <% spots.each do |spot| %>
+      <%= spot.name %>
+      <!-- Include other spot details as needed -->
+    <% end %>
+  <% end %>
+<% end %>

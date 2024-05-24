@@ -19,9 +19,9 @@ response = HTTParty.get(
     start: start_time.to_i,  # Convert to UTC timestamp
     end: end_time.to_i  # Convert to UTC timestamp
   },
-  headers: {
-    'Authorization' => ENV['STORMGLASS_API_KEY']
-  }
+  # headers: {
+  #   'Authorization' => ENV['STORMGLASS_API_KEY']
+  # }
 )
 
 # Do something with response data.
