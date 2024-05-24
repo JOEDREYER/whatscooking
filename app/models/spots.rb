@@ -117,16 +117,16 @@ surfing_spots = [
   { name: "Sollys", ideal_swell_direction: 215..270, ideal_wave_force: 1.5..2.5, ideal_wind_direction: 90..146, adequate_wind_direction: [80..90, 146..156], wind_speed: 0..40, ideal_tide: 3..5, wave_quality: 7 },
   { name: "Off The Wall", ideal_swell_direction: 215..270, ideal_wave_force: 2..4, ideal_wind_direction: 90..146, adequate_wind_direction: [80..90, 146..156], wind_speed: 0..40, ideal_tide: 3..5, wave_quality: 9 },
   { name: "Thermos", ideal_swell_direction: 215..270, ideal_wave_force: 3..4, ideal_wind_direction: 90..146, adequate_wind_direction: [80..90, 146..156], wind_speed: 0..40, ideal_tide: 3..5, wave_quality: 7 },
-  { name: "Derdersteen", ideal_swell_direction: 215..270, ideal_wave_force: 2..4, ideal_wind_direction: 0..100, adequate_wind_direction: [350..0, 100..110], wind_speed: 0..40, ideal_tide: 3..5, wave_quality: 6 },
+  { name: "Derdersteen", ideal_swell_direction: 215..270, ideal_wave_force: 1.5..4, ideal_wind_direction: 0..130, adequate_wind_direction: [350..0, 100..110], wind_speed: 0..40, ideal_tide: 1..2, wave_quality: 8.5 },
   { name: "Elands Bay", ideal_swell_direction: 215..270, ideal_wave_force: 2..5, ideal_wind_direction: 90..146, adequate_wind_direction: [80..90, 146..156], wind_speed: 0..40, ideal_tide: 1..5, wave_quality: 9 }
 ]
 
 
 current_conditions = {
-  swell_direction: 236,
-  wave_force: 2.2,
-  wind_direction: 120,
-  wind_speed: 20,
+  swell_direction: 216,
+  wave_force: 1.6,
+  wind_direction: 129,
+  wind_speed: 13,
   tide: 2
 }
 
