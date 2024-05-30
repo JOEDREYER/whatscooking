@@ -1,12 +1,9 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
-
-<%= calendar_for @spots do |calendar| %>
-  <%= calendar.calendar_table do |date, spots| %>
-    <%= date %>
-    <% spots.each do |spot| %>
-      <%= spot.name %>
-      <!-- Include other spot details as needed -->
+<h1>SurfJy</h1>
+<p>Find the tonnel jou masekind</p>
+<%= month_calendar do |date| %>
+  <div class="calendar-day">
+    <%= link_to date, surf_spots_path(date: date) do %>
+      <%= date %>
     <% end %>
-  <% end %>
+  </div>
 <% end %>

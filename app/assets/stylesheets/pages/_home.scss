@@ -1,1 +1,20 @@
 // Specific CSS for your home-page
+.calendar-day {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+}
+
+.calendar-day a {
+  text-decoration: none;
+  color: #333;
+}
+
+.calendar-day a:hover {
+  background-color: #f2f2f2;
+  color: #333;
+}

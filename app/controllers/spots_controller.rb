@@ -206,6 +206,11 @@ selector.select_top_spot
   end
 
   def show
+    def show
+      @date = Date.parse(params[:date])
+      @afternoon_spots = SurfSpot.where(time: 'afternoon')
+      @evening_spots = SurfSpot.where(time: 'evening')
+    end
   end
 
   def new

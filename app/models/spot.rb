@@ -208,7 +208,6 @@
 
 
 class Spot < ApplicationRecord
-  belongs_to :surfing_level
 
   def within_circular_range?(range, degree)
     return true if range.include?(degree)

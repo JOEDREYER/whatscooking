@@ -1,2 +1,17 @@
-<h1>Spots#show</h1>
-<p>Find me in app/views/spots/show.html.erb</p>
+
+
+<h1>Surf Spots for <%= @date %> </h1>
+
+<h2>Afternoon Spots</h2>
+<ul>
+  <% @afternoon_spots.each do |spot| %>
+    <li><%= spot.name %></li>
+  <% end %>
+</ul>
+
+<h2>Evening Spots</h2>
+<ul>
+  <% @evening_spots.each do |spot| %>
+    <li><%= spot.name %></li>
+  <% end %>
+</ul>

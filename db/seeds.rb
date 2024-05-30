@@ -2,6 +2,7 @@
 
 # Clear existing data to prevent duplicates
 Spot.delete_all
+User.delete_all
 
 # Create Users
 User.create!(email: 'example@example.com', password: 'password', password_confirmation: 'password')
