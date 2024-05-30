@@ -91,75 +91,75 @@
 
 
 
-class Spot < ApplicationRecord
-  belongs_to :surfing_level
-  def within_circular_range?(range, degree)
-    return true if range.include?(degree)
+# class Spot < ApplicationRecord
+#   belongs_to :surfing_level
+#   def within_circular_range?(range, degree)
+#     return true if range.include?(degree)
 
-    start, finish = range.first, range.last
-    if start > finish
-      (0..finish).include?(degree) || (start..360).include?(degree)
-    else
-      false
-    end
-  end
+#     start, finish = range.first, range.last
+#     if start > finish
+#       (0..finish).include?(degree) || (start..360).include?(degree)
+#     else
+#       false
+#     end
+#   end
 
-  def select_top_spot(surfing_spots, current_conditions)
-    spot_points = Hash.new(0)
+#   def select_top_spot(surfing_spots, current_conditions)
+#     spot_points = Hash.new(0)
 
-    surfing_spots.each do |spot|
-      conditions_met = true
+#     surfing_spots.each do |spot|
+#       conditions_met = true
 
-      spots.each do |condition, range|
-        next if condition == :name
+#       spots.each do |condition, range|
+#         next if condition == :name
 
-        case condition
-        when :adequate_wind_direction
-          adequate_met = range.any? { |r| within_circular_range?(r, current_conditions[:wind_direction]) }
-          conditions_met &&= adequate_met
-        when :ideal_wind_direction
-          ideal_met = within_circular_range?(range, current_conditions[:wind_direction])
-          conditions_met &&= ideal_met
-          spot_points[spot[:name]] += 3 if ideal_met
-        when :ideal_wave_force
-          wave_force_met = range.cover?(current_conditions[:wave_force])
-          spot_points[spot[:name]] += 2 if wave_force_met
-          conditions_met &&= wave_force_met
-        when :wind_speed
-          wind_speed_met = range.cover?(current_conditions[:wind_speed])
-          spot_points[spot[:name]] += 1 if wind_speed_met
-          conditions_met &&= wind_speed_met
-        when :ideal_swell_direction
-          swell_direction_met = range.cover?(current_conditions[:swell_direction])
-          spot_points[spot[:name]] += 3 if swell_direction_met
-          conditions_met &&= swell_direction_met
-        when :ideal_tide
-          tide_met = range.cover?(current_conditions[:tide])
-          spot_points[spot[:name]] += 5 if tide_met
-          conditions_met &&= tide_met
-        else
-          if range.is_a?(Range)
-            condition_met = range.cover?(current_conditions[condition])
-          else
-            condition_met = range == current_conditions[condition]
-          end
-          conditions_met &&= condition_met
-        end
-      end
-    end
+#         case condition
+#         when :adequate_wind_direction
+#           adequate_met = range.any? { |r| within_circular_range?(r, current_conditions[:wind_direction]) }
+#           conditions_met &&= adequate_met
+#         when :ideal_wind_direction
+#           ideal_met = within_circular_range?(range, current_conditions[:wind_direction])
+#           conditions_met &&= ideal_met
+#           spot_points[spot[:name]] += 3 if ideal_met
+#         when :ideal_wave_force
+#           wave_force_met = range.cover?(current_conditions[:wave_force])
+#           spot_points[spot[:name]] += 2 if wave_force_met
+#           conditions_met &&= wave_force_met
+#         when :wind_speed
+#           wind_speed_met = range.cover?(current_conditions[:wind_speed])
+#           spot_points[spot[:name]] += 1 if wind_speed_met
+#           conditions_met &&= wind_speed_met
+#         when :ideal_swell_direction
+#           swell_direction_met = range.cover?(current_conditions[:swell_direction])
+#           spot_points[spot[:name]] += 3 if swell_direction_met
+#           conditions_met &&= swell_direction_met
+#         when :ideal_tide
+#           tide_met = range.cover?(current_conditions[:tide])
+#           spot_points[spot[:name]] += 5 if tide_met
+#           conditions_met &&= tide_met
+#         else
+#           if range.is_a?(Range)
+#             condition_met = range.cover?(current_conditions[condition])
+#           else
+#             condition_met = range == current_conditions[condition]
+#           end
+#           conditions_met &&= condition_met
+#         end
+#       end
+#     end
 
-    sorted_spots = spot_points.sort_by { |_, points| -points }
-    top_5_spots = sorted_spots.first(5)
+#     sorted_spots = spot_points.sort_by { |_, points| -points }
+#     top_5_spots = sorted_spots.first(5)
 
-    top_5_spots.each do |spot, points|
-      spot_data = surfing_spots.find { |s| s[:name] == spot }
-      spot_points[spot] += spot_data[:wave_quality] if spot_data
-    end
+#     top_5_spots.each do |spot, points|
+#       spot_data = surfing_spots.find { |s| s[:name] == spot }
+#       spot_points[spot] += spot_data[:wave_quality] if spot_data
+#     end
 
-    final_sorted_spots = spot_points.sort_by { |_, points| -points }
-    final_sorted_spots.map { |spot, points| "#{spot}: #{points} points" }
-  end
-end
+#     final_sorted_spots = spot_points.sort_by { |_, points| -points }
+#     final_sorted_spots.map { |spot, points| "#{spot}: #{points} points" }
+#   end
+# end
 
 # surfing_spots = [
 #   { name: "Bettys Bay", ideal_swell_direction: 190..260, ideal_wave_force: 3.5..3.5, ideal_wind_direction: 330..60, adequate_wind_direction: [320..330, 60..70], wind_speed: 0..40, ideal_tide: 1..2, wave_quality: 8 },
@@ -205,3 +205,62 @@ end
 # selector.select_top_spot
 
 # points:
+
+
+class Spot < ApplicationRecord
+  belongs_to :surfing_level
+
+  def within_circular_range?(range, degree)
+    return true if range.include?(degree)
+
+    start, finish = range.first, range.last
+    if start > finish
+      (0..finish).include?(degree) || (start..360).include?(degree)
+    else
+      false
+    end
+  end
+
+  def select_top_spot(surfing_spots, current_conditions)
+    spot_points = Hash.new(0)
+
+    surfing_spots.each do |spot|
+      conditions_met = true
+
+      # Check Ideal Wind Direction
+      ideal_wind_direction = (spot.lower_wind_direction..spot.upper_wind_direction)
+      ideal_met = within_circular_range?(ideal_wind_direction, current_conditions[:wind_direction])
+      spot_points[spot.spot_name] += 3 if ideal_met
+
+      # Check Upper/Lower Wind Direction
+      wind_met = spot.lower_wind_direction == current_conditions[:wind_direction] || spot.upper_wind_direction == current_conditions[:wind_direction]
+      spot_points[spot.spot_name] += 1 if wind_met
+
+      # Check Ideal Swell Direction
+      ideal_swell_direction = (spot.lower_swell_direction..spot.upper_swell_direction)
+      swell_direction_met = within_circular_range?(ideal_swell_direction, current_conditions[:swell_direction])
+      spot_points[spot.spot_name] += 3 if swell_direction_met
+
+      # Check Upper/Lower Swell Direction
+      swell_met = spot.lower_swell_direction == current_conditions[:swell_direction] || spot.upper_swell_direction == current_conditions[:swell_direction]
+      spot_points[spot.spot_name] += 1 if swell_met
+
+      # Check Ideal Wave Force
+      wave_force_met = spot.ideal_wave_force == current_conditions[:wave_force]
+      spot_points[spot.spot_name] += 2 if wave_force_met
+
+      # Check Ideal Tide
+      tide_met = spot.ideal_tide == current_conditions[:tide]
+      spot_points[spot.spot_name] += 5 if tide_met
+
+      # Consider Wave Quality
+      spot_points[spot.spot_name] += spot.wave_quality
+    end
+
+    sorted_spots = spot_points.sort_by { |_, points| -points }
+    top_5_spots = sorted_spots.first(5)
+
+    final_sorted_spots = top_5_spots.map { |spot, points| "#{spot}: #{points} points" }
+    final_sorted_spots
+  end
+end

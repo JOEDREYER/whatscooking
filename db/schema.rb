@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_24_164625) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_30_134251) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,16 +28,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_24_164625) do
   end
 
   create_table "spots", force: :cascade do |t|
-    t.string "name"
     t.float "latitude"
     t.float "longitude"
-    t.float "swell_size"
-    t.string "wind_direction"
-    t.string "swell_direction"
-    t.string "tide"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "swell_period"
+    t.string "spot_name"
+    t.integer "ideal_swell_direction"
+    t.integer "lower_swell_direction"
+    t.integer "upper_swell_direction"
+    t.integer "ideal_wave_force"
+    t.integer "ideal_wind_direction"
+    t.integer "lower_wind_direction"
+    t.integer "upper_wind_direction"
+    t.string "ideal_tide"
+    t.integer "wave_quality"
   end
 
   create_table "surfing_levels", force: :cascade do |t|
