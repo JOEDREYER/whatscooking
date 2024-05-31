@@ -51,7 +51,8 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 gem 'devise'
 gem 'simple_calendar', '~> 2.0', '>= 2.0.6'
-
+gem 'httparty'
+gem 'whenever', require: false
 
 group :development, :test do
   gem "dotenv-rails"

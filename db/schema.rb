@@ -10,12 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_30_162457) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_31_121925) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "scrape_logs", force: :cascade do |t|
-    t.bigint "spot_id", null: false
     t.datetime "scrape_time"
     t.float "swell_size"
     t.string "wind_direction"
@@ -24,7 +23,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_162457) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "swell_period"
-    t.index ["spot_id"], name: "index_scrape_logs_on_spot_id"
   end
 
   create_table "spots", force: :cascade do |t|
@@ -33,13 +31,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_162457) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "spot_name"
-    t.integer "ideal_swell_direction"
-    t.integer "lower_swell_direction"
-    t.integer "upper_swell_direction"
-    t.integer "ideal_wave_force"
-    t.integer "ideal_wind_direction"
-    t.integer "lower_wind_direction"
-    t.integer "upper_wind_direction"
+    t.string "ideal_swell_direction"
+    t.string "lower_swell_direction"
+    t.string "upper_swell_direction"
+    t.string "ideal_wave_force"
+    t.string "ideal_wind_direction"
+    t.string "lower_wind_direction"
+    t.string "upper_wind_direction"
     t.string "ideal_tide"
     t.integer "wave_quality"
   end
@@ -56,5 +54,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_162457) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "scrape_logs", "spots"
 end

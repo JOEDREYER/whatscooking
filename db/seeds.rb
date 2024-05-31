@@ -15,7 +15,7 @@ csv = CSV.parse(csv_text, headers: true)
 
 def parse_range(value)
   return nil if value.blank?
-  value.gsub(/\s+/, '') # remove any whitespace
+  value # return the entire value, including the range information
 end
 
 
@@ -36,6 +36,20 @@ csv.each do |row|
   spot.wave_quality = row['wave_quality']
   spot.save!
 end
+
+# csv.each do |row|
+#   spot = Spot.new
+#   spot.spot_name = row['spot_name']
+#   spot.latitude = row['latitude']
+#   spot.longitude = row['longitude']
+#   spot.ideal_swell_direction = (row['lower_swell_direction'].to_i)..(row['upper_swell_direction'].to_i)
+#   spot.ideal_wave_force = (row['ideal_wave_force'].to_i)..(row['ideal_wave_force'].to_i)
+#   spot.ideal_wind_direction = (row['lower_wind_direction'].to_i)..(row['upper_wind_direction'].to_i)
+#   ideal_tide_range = row['ideal_tide'].to_s.partition '..'
+#   spot.ideal_tide = (ideal_tide_range.first.to_i)..(ideal_tide_range.last.to_i)
+#   spot.wave_quality = row['wave_quality']
+#   spot.save!
+# end
 
 
 puts 'Seeding complete!'
