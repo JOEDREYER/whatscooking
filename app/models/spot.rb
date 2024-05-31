@@ -208,6 +208,32 @@
 
 
 class Spot < ApplicationRecord
+  validate :validate_directions
+
+  private
+
+  def validate_directions
+    directions = [:ideal_swell_direction, :lower_swell_direction, :upper_swell_direction, :ideal_wind_direction, :lower_wind_direction, :upper_wind_direction]
+    directions.each do |direction|
+      value = self[direction]
+      if value.present?
+        if value.is_a?(Integer)
+          # Handle integer values
+          if value < 0 || value > 360
+            errors.add(direction, 'is not a valid value')
+          end
+        else
+          # Handle range values
+          range = value.split('-').map(&:to_i)
+          if range.size != 2 || range.min < 0 || range.max > 360
+            errors.add(direction, 'is not a valid range')
+          end
+        end
+      end
+    end
+  end
+
+  
 
   def within_circular_range?(range, degree)
     return true if range.include?(degree)
