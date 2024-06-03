@@ -8,7 +8,7 @@ class StormglassApi
 
   def pull_tide_data
     # API pulling logic for tide data
-    response = HTTParty.get('(link unavailable)',
+    response = HTTParty.get('https://api.stormglass.io/v2/tide/sea-level/point',
       query: {
         lat: -33.9221,
         lng: 18.4231,
@@ -36,7 +36,7 @@ class StormglassApi
       )
     end
   end
-  
+
   def pull_data
     # Your API pulling logic here
     start_time = Time.now.utc
@@ -89,7 +89,7 @@ class StormglassApi
     end
   end
 end
-# # Print grouped data
+# Print grouped data
 # grouped_data.each do |date, data|
 #   puts "Date: #{date}"
 #   data.each do |entry|
