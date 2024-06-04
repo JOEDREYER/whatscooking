@@ -17,6 +17,40 @@ myPromise
   });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 //   // callback hell :
 
 //   asyncOperation1((result1) => {
