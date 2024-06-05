@@ -147,22 +147,25 @@ class StormglassApi
       headers: { 'Authorization' => ENV['STORMGLASS_API_KEY'] }
     )
 
-
+    p
     # Parse the responses and extract the data
     weather_json = JSON.parse(weather_response.body)
-    p weather
+
     tide_json = JSON.parse(tide_response.body)
+
+    p weather_json
     p tide_json
-    if tide_response.success?
-      tide_json = JSON.parse(tide_response.body)
-    else
-      puts "Error: #{tide_response.code} - #{tide_response.message}"
-      return
-    end
+    # puts "Weather Response Code: #{weather_response.code}"
+    # puts "Weather Response Body: #{weather_response.body}"
+    
     # Create a hash to match tide data with weather data based on time
-    tide_data_by_time = tide_json['hours'].each_with_object({}) do |hour_data, hash|
-      time = Time.parse(hour_data['time']).utc
-      hash[time] = hour_data['waterLevel']
+    if tide_json && tide_json['data'] && tide_json['data'].any?
+      tide_data_by_time = tide_json['data'].each_with_object({}) do |hour_data, hash|
+        time = Time.parse(hour_data['time']).utc
+        hash[time] = hour_data['sg']
+      end
+    else
+      puts "Error: No tide data available"
     end
 
     # Group weather data by day
@@ -196,5 +199,5 @@ class StormglassApi
     end
   end
 end
-
-p "hello world"
+stormglass = StormglassApi.new
+stormglass.pull_data

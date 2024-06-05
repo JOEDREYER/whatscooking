@@ -1,7 +1,4 @@
 class Spot < ApplicationRecord
-
-
-
   def within_circular_range?(range, degree)
     return true if range.include?(degree)
 
