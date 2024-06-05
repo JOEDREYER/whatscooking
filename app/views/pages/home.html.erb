@@ -1,12 +1,5 @@
-<h1>SurfJy</h1>
+
 <p>Find the tonnel jou masekind</p>
 <%= month_calendar do |date| %>
-  <% forecast = Forecast.find_by(date: date) %>
-  <% if forecast %>
-    <%= link_to surf_spot_path(id: (link unavailable)) do %>
-      <div class="calendar-day">
-        <%= date %>
-      </div>
-    <% end %>
-  <% end %>
+  <%= link_to date, surf_spots_path(date: date) %>
 <% end %>

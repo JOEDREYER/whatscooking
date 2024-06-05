@@ -1,17 +1,8 @@
 
-
-<h1>Surf Spots for <%= @date %> </h1>
-
-<h2>Afternoon Spots</h2>
+<h2>Top Surf Spots by Hour</h2>
+<h2>Ranked Spots</h2>
 <ul>
-  <% @afternoon_spots.each do |spot| %>
-    <li><%= spot.name %></li>
-  <% end %>
-</ul>
-
-<h2>Evening Spots</h2>
-<ul>
-  <% @evening_spots.each do |spot| %>
-    <li><%= spot.name %></li>
+  <% @ranked_spots.each do |spot| %>
+    <li><%= spot[:spot].name %> ( <%= spot[:points] %> points )</li>
   <% end %>
 </ul>
