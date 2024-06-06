@@ -3,6 +3,17 @@
 <h2>Ranked Spots</h2>
 <ul>
   <% @ranked_spots.each do |spot| %>
-    <li><%= spot[:spot].name %> ( <%= spot[:points] %> points )</li>
+    <li><%= spot[:spot].spot_name %> ( <%= spot[:points] %> points )</li>
   <% end %>
 </ul>
+
+<% if flash[:debug] %>
+  <div class="debug-info">
+    <h3>Debug Info</h3>
+    <ul>
+      <% flash[:debug].each do |info| %>
+        <li><%= info %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

@@ -5,6 +5,27 @@ require 'uri'
 require 'json'
 
 class StormglassApi
+
+
+  def calculate_wave_force(swell_size, swell_period)
+    wave_force = swell_size
+
+    if swell_period > 20
+      wave_force += 2
+    elsif swell_period > 17
+      wave_force += 1.5
+    elsif swell_period > 15
+      wave_force += 1
+    elsif swell_period > 13
+      wave_force += 0.5
+    end
+
+    wave_force
+  end
+
+
+
+
   def pull_data
     # API pulling logic for weather and tide data
     start_time = Time.now.utc
@@ -77,13 +98,17 @@ class StormglassApi
     grouped_weather_data.each do |date, data|
       data.each do |entry|
         tide_value = tide_data_by_time[entry[:time]]
+        swell_size = entry[:wave_height]
+        swell_period = entry[:wave_period]
+
+        wave_force = calculate_wave_force(swell_size, swell_period)
+
         ScrapeLog.create!(
           scrape_time: entry[:time],
-          swell_size: entry[:wave_height],
           wind_direction: entry[:wind_direction],
           swell_direction: entry[:swell_direction],
           tide: tide_value,
-          swell_period: entry[:wave_period]
+          wave_force: wave_force  # Add wave_force to the attributes being created
         )
       end
     end
