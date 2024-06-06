@@ -29,7 +29,7 @@ class StormglassApi
   def pull_data
     # API pulling logic for weather and tide data
     start_time = Time.now.utc
-    end_time = start_time + 5 * 24 * 60 * 60 # adding 5 days in seconds
+    end_time = start_time + 2 * 24 * 60 * 60 # adding 2 days in seconds
 
     # Weather data API call
     weather_response = HTTParty.get(
@@ -64,20 +64,50 @@ class StormglassApi
 
     tide_json = JSON.parse(tide_response.body)
 
+
+    daily_min_max = {}
+
+
+
+
     p weather_json
-    p tide_json
+    data["data"].each do |point|
+      time = point["time"]
+      sg = point["sg"]
+      day = time.split("T")[0]  # extract the date part (YYYY-MM-DD)
+      time_of_day = time.split("T")[1]  # extract the time part (HH:MM:SSZ)
+
+      if daily_min_max[day]
+        if sg < daily_min_max[day][:min][:value]
+          daily_min_max[day][:min] = { value: sg, time: time_of_day }
+        end
+        if sg > daily_min_max[day][:max][:value]
+          daily_min_max[day][:max] = { value: sg, time: time_of_day }
+        end
+      else
+        daily_min_max[day] = {
+          min: { value: sg, time: time_of_day },
+          max: { value: sg, time: time_of_day }
+        }
+      end
+    end
+
+    puts JSON.pretty_generate(daily_min_max)
+
+
+
     # puts "Weather Response Code: #{weather_response.code}"
     # puts "Weather Response Body: #{weather_response.body}"
 
     # Create a hash to match tide data with weather data based on time
-    if tide_json && tide_json['data'] && tide_json['data'].any?
-      tide_data_by_time = tide_json['data'].each_with_object({}) do |hour_data, hash|
-        time = Time.parse(hour_data['time']).utc
-        hash[time] = hour_data['sg']
-      end
-    else
-      puts "Error: No tide data available"
-    end
+    # if tide_json && tide_json['data'] && tide_json['data'].any?
+    #   tide_data_by_time = tide_json['data'].each_with_object({}) do |hour_data, hash|
+    #     time = Time.parse(hour_data['time']).utc
+    #     hash[time] = hour_data['sg']
+    #   end
+    # else
+    #   puts "Error: No tide data available"
+    # end
 
     # Group weather data by day
     grouped_weather_data = {}
