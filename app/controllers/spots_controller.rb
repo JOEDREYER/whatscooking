@@ -71,7 +71,7 @@ class SpotsController < ApplicationController
           end
 
           # Evaluate wave force
-          if spot.ideal_wave_force.include?(log.swell_size.to_f)
+          if spot.ideal_wave_force.include?(log.wave_force.to_f)
             points += 3
           end
 
